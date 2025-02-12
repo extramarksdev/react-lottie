@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.2.10 (2025-02-12)
+
+
+### Features
+
+* Allow custom styles (helps fix [#18](https://github.com/chenqingspring/react-lottie/issues/18)) ([d624a51](https://github.com/chenqingspring/react-lottie/commit/d624a51b48e4fbef7b82968779bf1fb2c85c69d3))
+* update lottie-web to latest ([8018d02](https://github.com/chenqingspring/react-lottie/commit/8018d02c0c5a42b315d3f1e3e4d2edb9572e5d46))
+
+
+### Bug Fixes
+
+* add babel-runtime ([eb089a4](https://github.com/chenqingspring/react-lottie/commit/eb089a4335a85a2996159762c8860673bf45b547))
+* repository.url ([4093792](https://github.com/chenqingspring/react-lottie/commit/409379290c78fd9ef4e029b689e0a7028e9bb67d))
+
 ### [1.2.10](https://github.com/chenqingspring/react-lottie/compare/v1.2.9...v1.2.10) (2024-11-30)
 
 
