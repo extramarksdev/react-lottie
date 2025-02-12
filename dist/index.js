@@ -139,8 +139,9 @@ var Lottie = exports["default"] = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "destroy",
     value: function destroy() {
-      if (this.anim.destroy) {
-        this.anim.destroy();
+      if (this.anim) {
+        var _this$anim;
+        (_this$anim = this.anim) === null || _this$anim === void 0 || _this$anim.destroy();
       }
     }
   }, {

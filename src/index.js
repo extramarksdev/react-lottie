@@ -96,8 +96,8 @@ export default class Lottie extends React.Component {
   }
 
   destroy() {
-    if (this.anim.destroy) {
-      this.anim.destroy();  
+    if (this.anim) {
+      this.anim?.destroy();  
     }
   }
 
