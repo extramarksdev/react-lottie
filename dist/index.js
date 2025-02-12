@@ -33,11 +33,9 @@ var Lottie = exports["default"] = /*#__PURE__*/function (_React$Component) {
     }
     _this = _callSuper(this, Lottie, [].concat(args));
     _defineProperty(_this, "handleClickToPause", function () {
-      // The pause() method is for handling pausing by passing a prop isPaused
-      // This method is for handling the ability to pause by clicking on the animation
-      if (_this.anim.isPaused) {
+      if (_this.anim && _this.anim.isPaused) {
         _this.anim.play();
-      } else {
+      } else if (_this.anim) {
         _this.anim.pause();
       }
     });
@@ -72,10 +70,9 @@ var Lottie = exports["default"] = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "componentWillUpdate",
     value: function componentWillUpdate(nextProps /* , nextState */) {
-      /* Recreate the animation handle if the data is changed */
       if (this.options.animationData !== nextProps.options.animationData) {
         this.deRegisterEvents(this.props.eventListeners);
-        this.destroy();
+        this.destroy(); // calling destroy here
         this.options = _objectSpread(_objectSpread({}, this.options), nextProps.options);
         this.anim = _lottieWeb["default"].loadAnimation(this.options);
         this.registerEvents(nextProps.eventListeners);
@@ -99,7 +96,7 @@ var Lottie = exports["default"] = /*#__PURE__*/function (_React$Component) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.deRegisterEvents(this.props.eventListeners);
-      this.destroy();
+      this.destroy(); // calling destroy here as well
       this.options.animationData = null;
       this.anim = null;
     }
@@ -126,21 +123,25 @@ var Lottie = exports["default"] = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "stop",
     value: function stop() {
-      this.anim.stop();
+      if (this.anim.stop) {
+        this.anim.stop();
+      }
     }
   }, {
     key: "pause",
     value: function pause() {
-      if (this.props.isPaused && !this.anim.isPaused) {
+      if (this.props.isPaused && this.anim && !this.anim.isPaused) {
         this.anim.pause();
-      } else if (!this.props.isPaused && this.anim.isPaused) {
+      } else if (!this.props.isPaused && this.anim && this.anim.isPaused) {
         this.anim.pause();
       }
     }
   }, {
     key: "destroy",
     value: function destroy() {
-      this.anim.destroy();
+      if (this.anim.destroy) {
+        this.anim.destroy();
+      }
     }
   }, {
     key: "registerEvents",
@@ -188,22 +189,17 @@ var Lottie = exports["default"] = /*#__PURE__*/function (_React$Component) {
       var onClickHandler = isClickToPauseDisabled ? function () {
         return null;
       } : this.handleClickToPause;
-      return (
-        /*#__PURE__*/
-        // Bug with eslint rules https://github.com/airbnb/javascript/issues/1374
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        _react["default"].createElement("div", {
-          ref: function ref(c) {
-            _this4.el = c;
-          },
-          style: lottieStyles,
-          onClick: onClickHandler,
-          title: title,
-          role: ariaRole,
-          "aria-label": ariaLabel,
-          tabIndex: "0"
-        })
-      );
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        ref: function ref(c) {
+          _this4.el = c;
+        },
+        style: lottieStyles,
+        onClick: onClickHandler,
+        title: title,
+        role: ariaRole,
+        "aria-label": ariaLabel,
+        tabIndex: "0"
+      });
     }
   }]);
 }(_react["default"].Component);

@@ -29,16 +29,16 @@ export default class Lottie extends React.Component {
 
     this.options = { ...this.options, ...options };
     this.anim = lottie.loadAnimation(this.options);
+
     this.registerEvents(eventListeners);
     this.setSpeed();
   }
 
   componentWillUpdate(nextProps /* , nextState */) {
-    /* Recreate the animation handle if the data is changed */
     if (this.options.animationData !== nextProps.options.animationData) {
       this.deRegisterEvents(this.props.eventListeners);
-      this.destroy();
-      this.options = {...this.options, ...nextProps.options};
+      this.destroy(); // calling destroy here
+      this.options = { ...this.options, ...nextProps.options };
       this.anim = lottie.loadAnimation(this.options);
       this.registerEvents(nextProps.eventListeners);
     }
@@ -60,7 +60,7 @@ export default class Lottie extends React.Component {
 
   componentWillUnmount() {
     this.deRegisterEvents(this.props.eventListeners);
-    this.destroy();
+    this.destroy(); // calling destroy here as well
     this.options.animationData = null;
     this.anim = null;
   }
@@ -82,19 +82,23 @@ export default class Lottie extends React.Component {
   }
 
   stop() {
-    this.anim.stop();
+    if (this.anim.stop) {
+      this.anim.stop();
+    }
   }
 
   pause() {
-    if (this.props.isPaused && !this.anim.isPaused) {
+    if (this.props.isPaused && this.anim && !this.anim.isPaused) {
       this.anim.pause();
-    } else if (!this.props.isPaused && this.anim.isPaused) {
+    } else if (!this.props.isPaused && this.anim && this.anim.isPaused) {
       this.anim.pause();
     }
   }
 
   destroy() {
-    this.anim.destroy();
+    if (this.anim.destroy) {
+      this.anim.destroy();  
+    }
   }
 
   registerEvents(eventListeners) {
@@ -110,11 +114,9 @@ export default class Lottie extends React.Component {
   }
 
   handleClickToPause = () => {
-    // The pause() method is for handling pausing by passing a prop isPaused
-    // This method is for handling the ability to pause by clicking on the animation
-    if (this.anim.isPaused) {
+    if (this.anim && this.anim.isPaused) {
       this.anim.play();
-    } else {
+    } else if (this.anim) {
       this.anim.pause();
     }
   }
@@ -153,8 +155,6 @@ export default class Lottie extends React.Component {
     const onClickHandler = isClickToPauseDisabled ? () => null : this.handleClickToPause;
 
     return (
-      // Bug with eslint rules https://github.com/airbnb/javascript/issues/1374
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         ref={(c) => {
           this.el = c;
